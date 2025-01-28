@@ -1,10 +1,13 @@
 'use client'
-import React, { useState } from 'react';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import React, { useEffect, useState } from 'react';
 import { FaGithub, FaGitlab, FaLinkedin, FaStackOverflow, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { SiFrontendmentor } from 'react-icons/si';
 
 interface Link {
+  [x: string]: string;
   url: string;
   platform: string;
 }
@@ -20,24 +23,62 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
     updatedLinks[index][key] = value;
     setLinkArr(updatedLinks);
   };
+  //ლინკის წაშლა
+  const handleRemove = async (index: number) => {
+    const linkToRemove = linkArr[index];
+    console.log("Link to remove:", linkToRemove);
+    
   
+    try {
+      // თუ ლინკს აქვს `_id`, მონგოს ბაზიდან წავშლით
+      if (linkToRemove?._id) {
+        const token = getCookie("accessToken");
+        if (!token) {
+          console.error("No token found");
+          return;
+        }
+  
+        await axios.delete(`http://localhost:3001/links/${linkToRemove._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        console.log(`Link removed from database: ${linkToRemove._id}`);
+      } else {
+        console.log("Link does not have an _id, removing locally.");
+      }
+    } catch (error: any) {
+      console.error(
+        "Error removing link from database:",
+        error?.response?.data || error.message
+      );
+    }
+  
+    // ლოკალურად ლინკის წაშლა
+    const updatedLinks = linkArr.filter((_, i) => i !== index);
+    setLinkArr(updatedLinks);
+  };
+  
+  
+
   const platforms = [
-    { value: 'GitHub',  icon: <FaGithub />  },
+    { value: 'GitHub', icon: <FaGithub /> },
     { value: 'Twitter', icon: <FaTwitter /> },
     { value: 'YouTube', icon: <FaYoutube /> },
     { value: 'LinkedIn', icon: <FaLinkedin /> },
-    { value: 'GitLab',  icon: <FaGitlab /> },
+    { value: 'GitLab', icon: <FaGitlab /> },
     { value: 'Frontend Mentor', icon: <SiFrontendmentor /> },
-    { value: 'Stack Overflow', icon: <FaStackOverflow  /> },
+    { value: 'Stack Overflow', icon: <FaStackOverflow /> },
   ];
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const handleType = (index: number) => {
     if (activeIndex === index) {
-      setActiveIndex(null); 
+      setActiveIndex(null);
     } else {
-      setActiveIndex(index); 
+      setActiveIndex(index);
     }
   };
 
@@ -55,11 +96,9 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
           <div className='flex justify-between items-center'>
             <p className='text-[16px] text-[#737373]'>Link#{index + 1}</p>
             <button
-              onClick={() => {
-                const updatedLinks = linkArr.filter((_, i) => i !== index);
-                setLinkArr(updatedLinks);
-              }}
-              className='text-[#737373] text-[16px] font-normal'>
+              className='text-[#737373] text-[16px] font-normal'
+              onClick={() => handleRemove(index)}
+            >
               Remove
             </button>
           </div>
@@ -67,12 +106,10 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
             <div className='flex flex-col' onClick={() => handleType(index)}>
               <label htmlFor="" className='text-[#333333] text-[12px] pt-[15px]'>Platform</label>
               <div className='h-[48px] border-[1px] border-[#D9D9D9] rounded-[6px] px-[8px] flex justify-between items-center'>
-              <div className='flex items-center gap-[12px]'>
-              {/* Icon */}
-              <p>{link.platform ? platforms.find(p => p.value === link.platform)?.icon : null}</p>
-              {/* Platform name */}
-              <p>{link.platform || "Choose platform"}</p>
-              </div>
+                <div className='flex items-center gap-[12px]'>
+                  <p>{link.platform ? platforms.find(p => p.value === link.platform)?.icon : null}</p>
+                  <p>{link.platform || "Choose platform"}</p>
+                </div>
                 {activeIndex === index ? <IoIosArrowUp /> : <IoIosArrowDown />}
               </div>
             </div>

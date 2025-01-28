@@ -6,9 +6,11 @@ import React, { useEffect, useState } from 'react';
 import Header from '../header/header';
 import Empty from '../empty';
 import Links from '../links';
+import axios from 'axios';
 
 export default function Content() {
   const [linkArr, setLinkArr] = useState<{ url: string; platform: string }[]>([]);
+  const [newLinks, setNewLinks] = useState<{ url: string; platform: string }[]>([]);
   const router = useRouter();
   const [accessToken, setAccessToken] = useState<null | string>();
 
@@ -21,8 +23,39 @@ export default function Content() {
   if (!accessToken) return null;
 
   const addLink = () => {
-    setLinkArr([...linkArr, { url: '', platform: '' }]);
+    const newLink = { url: '', platform: '' };
+    setLinkArr([...linkArr, newLink]);
+    setNewLinks([...newLinks, newLink]);
   };
+  
+  //ამ მეთოდით ვამატებ ბაზაში
+  const handleSave = async () => {
+    const token = getCookie("accessToken"); 
+    if (!token) {
+      console.error('No token found. Request not sent.');
+      return;
+    }
+    try {
+      const response = await axios.post("http://localhost:3001/links", newLinks, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+  
+      console.log('Saved successfully:', response.data);
+      const savedLinks = response.data;
+      const updatedLinkArr = linkArr.map((link, index) => {
+        const savedLink = savedLinks[index];
+        return { ...link, _id: savedLink._id };
+      });
+  
+      setLinkArr(updatedLinkArr);
+      setNewLinks([]);
+    } catch (error) {
+      console.error('Error saving links:', error);
+    }
+  };
+  
 
   return (
     <>
@@ -42,9 +75,11 @@ export default function Content() {
         {linkArr.length === 0 ? (
           <Empty />
         ) : (
-          <Links linkArr={linkArr} setLinkArr={setLinkArr} />
+          <Links linkArr={linkArr} setLinkArr={setLinkArr}  />
         )}
-        <button className='h-[46px] bg-[#633CFF] text-white w-full rounded-[8px] mb-[20px]'>Save</button>
+        <button 
+        onClick={handleSave}
+        className='h-[46px] bg-[#633CFF] text-white w-full rounded-[8px] mb-[20px]'>Save</button>
       </div>
     </>
   );
