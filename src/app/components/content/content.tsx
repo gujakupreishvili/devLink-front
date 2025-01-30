@@ -1,6 +1,7 @@
 'use client'
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
+import {ToastContainer, toast } from "react-toastify";
 
 import React, { useEffect, useState } from 'react';
 import Header from '../header/header';
@@ -27,12 +28,27 @@ export default function Content() {
     setLinkArr([...linkArr, newLink]);
     setNewLinks([...newLinks, newLink]);
   };
-  
   //ამ მეთოდით ვამატებ ბაზაში
   const handleSave = async () => {
     const token = getCookie("accessToken"); 
     if (!token) {
       console.error('No token found. Request not sent.');
+      return;
+    }
+    const hasEmptyUrl = newLinks.some(link => link.url.trim() === "");
+    const hasPlatform = newLinks.some(link => link.platform.trim() === "");
+  
+    if (hasEmptyUrl || hasPlatform) {
+      console.log(toast.error, "tosast error")
+      toast.error("URL and Platform fields cannot be empty!", {
+        position: "top-right",
+        autoClose: 3000, // 3 წამი
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
       return;
     }
     try {
@@ -51,6 +67,15 @@ export default function Content() {
   
       setLinkArr(updatedLinkArr);
       setNewLinks([]);
+      toast.success("Your link has been successfully added. ", {
+        position: "top-right",
+        autoClose: 3000, // 3 წამი
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
     } catch (error) {
       console.error('Error saving links:', error);
     }
@@ -81,6 +106,7 @@ export default function Content() {
         onClick={handleSave}
         className='h-[46px] bg-[#633CFF] text-white w-full rounded-[8px] mb-[20px]'>Save</button>
       </div>
+      <ToastContainer />
     </>
   );
 }

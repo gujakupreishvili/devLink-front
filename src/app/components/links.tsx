@@ -27,7 +27,6 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
   const handleRemove = async (index: number) => {
     const linkToRemove = linkArr[index];
     console.log("Link to remove:", linkToRemove);
-    
   
     try {
       // თუ ლინკს აქვს `_id`, მონგოს ბაზიდან წავშლით
@@ -91,6 +90,7 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
 
   return (
     <>
+    <div className={`${linkArr.length >=2 ?'overflow-auto' :""}  h-[600px]`}>
       {linkArr.map((link, index) => (
         <div key={index} className='bg-[#FAFAFA] w-full rounded-[8px] px-[22px] py-[18px] mb-[30px]'>
           <div className='flex justify-between items-center'>
@@ -143,6 +143,7 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
           </div>
         </div>
       ))}
+     </div>
     </>
   );
 }

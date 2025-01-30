@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { FaLink } from 'react-icons/fa'
 import { FaRegCircleUser } from 'react-icons/fa6'
 import { IoEyeOutline } from 'react-icons/io5'
+import Link from 'next/link'
 
 export default function Header() {
   return (
@@ -19,10 +20,10 @@ export default function Header() {
         <p className='hidden'>Profile Details</p>
         </div>
       </div>
-      <div>
+      <Link href='/preview '>
       <IoEyeOutline className='text-[20px]' />
       <p className="hidden">Preview</p>
-      </div>
+      </Link>
 
       
     </div>
