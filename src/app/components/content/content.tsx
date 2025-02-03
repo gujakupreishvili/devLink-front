@@ -1,7 +1,7 @@
 'use client'
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
-import {ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 import React, { useEffect, useState } from 'react';
 import Header from '../header/header';
@@ -21,14 +21,25 @@ export default function Content() {
     setAccessToken(token as string | null);
   }, [router]);
 
-  if (!accessToken) return null;
+  useEffect(() => {
+    const storedLinks = localStorage.getItem('linkArr');
+    if (storedLinks) {
+      setLinkArr(JSON.parse(storedLinks));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (linkArr.length > 0) {
+      localStorage.setItem('linkArr', JSON.stringify(linkArr));
+    }
+  }, [linkArr]);
 
   const addLink = () => {
     const newLink = { url: '', platform: '' };
     setLinkArr([...linkArr, newLink]);
     setNewLinks([...newLinks, newLink]);
   };
-  //ამ მეთოდით ვამატებ ბაზაში
+
   const handleSave = async () => {
     const token = getCookie("accessToken"); 
     if (!token) {
@@ -39,10 +50,9 @@ export default function Content() {
     const hasPlatform = newLinks.some(link => link.platform.trim() === "");
   
     if (hasEmptyUrl || hasPlatform) {
-      console.log(toast.error, "tosast error")
       toast.error("URL and Platform fields cannot be empty!", {
         position: "top-right",
-        autoClose: 3000, // 3 წამი
+        autoClose: 3000, // 3 seconds
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -67,9 +77,9 @@ export default function Content() {
   
       setLinkArr(updatedLinkArr);
       setNewLinks([]);
-      toast.success("Your link has been successfully added. ", {
+      toast.success("Your link has been successfully added.", {
         position: "top-right",
-        autoClose: 3000, // 3 წამი
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -81,7 +91,6 @@ export default function Content() {
     }
   };
   
-
   return (
     <>
       <Header />
@@ -100,11 +109,11 @@ export default function Content() {
         {linkArr.length === 0 ? (
           <Empty />
         ) : (
-          <Links linkArr={linkArr} setLinkArr={setLinkArr}  />
+          <Links linkArr={linkArr} setLinkArr={setLinkArr} />
         )}
         <button 
-        onClick={handleSave}
-        className='h-[46px] bg-[#633CFF] text-white w-full rounded-[8px] mb-[20px]'>Save</button>
+          onClick={handleSave}
+          className='h-[46px] bg-[#633CFF] text-white w-full rounded-[8px] mb-[20px]'>Save</button>
       </div>
       <ToastContainer />
     </>

@@ -1,6 +1,7 @@
 'use client'
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import { link } from 'fs';
 import React, { useEffect, useState } from 'react';
 import { FaGithub, FaGitlab, FaLinkedin, FaStackOverflow, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
@@ -23,6 +24,7 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
     updatedLinks[index][key] = value;
     setLinkArr(updatedLinks);
   };
+
   //ლინკის წაშლა
   const handleRemove = async (index: number) => {
     const linkToRemove = linkArr[index];
