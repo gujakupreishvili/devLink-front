@@ -51,9 +51,9 @@ export default function SignUp() {
 
 
   return (
-    <div className='flex flex-col justify-center items-start h-screen gap-[40px] px-[20px]'>
+    <div className='flex flex-col justify-center items-start md:items-center h-screen gap-[40px] px-[20px]'>
        <Image src={logo} alt={"logo"} />
-       <div className='w-full'>
+       <div className='w-full md:w-[476px] md:bg-white md:p-[25px] md:rounded-[8px]'>
         <h1 className='text-[24px] text-[#333333] font-bold pb-[8px]'>Create account</h1>
         <p className='text-[16px] text-[#737373] font-normal pb-[35px]'>Let’s get you started sharing your links!</p>
         <form action="" 
@@ -72,7 +72,7 @@ export default function SignUp() {
           onBlur={handleBlur}
            placeholder="e.g. Alex Johnson"
            className={`pl-[40px] text-[16px] h-[48px]  w-full border-[1px] ${errors.name ? "border-red-500" :"border-[#D9D9D9]"} rounded-[8px]`}  />  
-            {errors.name && <p className='text-red-500 absolute right-2 text-[12px] hidden lg:block'>{errors.name}</p>}
+            {errors.name && <p className='text-red-500 absolute right-2 text-[12px] hidden md:block'>{errors.name}</p>}
           </div>
           </div>
 
@@ -87,7 +87,7 @@ export default function SignUp() {
             onBlur={handleBlur}
            placeholder ="e.g. alex@email.com" 
            className={`pl-[40px] text-[16px] h-[48px]  w-full  border-[1px] ${errors.email ? "border-red-500" :"border-[#D9D9D9]"} rounded-[8px]`}  />
-            {errors.email && <p className='text-red-500 absolute  right-2 text-[12px] hidden lg:block'>{errors.email}</p>}
+            {errors.email && <p className='text-red-500 absolute  right-2 text-[12px] hidden md:block'>{errors.email}</p>}
           </div>
           </div>
 
@@ -102,15 +102,7 @@ export default function SignUp() {
           onBlur={handleBlur}
            placeholder ="At least .8 characters" 
            className={`pl-[40px] text-[16px] h-[48px]  w-full border-[1px] ${errors.password ? "border-red-500" :"border-[#D9D9D9]"} rounded-[8px]`}  /> 
-           {errors.password && <p className='text-red-500  absolute right-2 text-[12px] hidden lg:block'>{errors.password}</p>}
-          </div>
-          </div>
-
-          <div className='flex flex-col'>
-          <label htmlFor="" className='text-[12px] text-[#333333] pb-[3px]'>Confirm password</label>
-          <div className='flex flex-row items-center relative'>
-          <TbLockPassword className='absolute left-3 text-[#333333]'  />
-         <input type="passowrd"  placeholder ="At least .8 characters" className='pl-[40px] text-[16px] h-[48px]  w-full border-[1px] borer-[#D9D9D9] rounded-[8px]'  /> 
+           {errors.password && <p className='text-red-500  absolute right-2 text-[12px] hidden md:block'>{errors.password}</p>}
           </div>
           </div>
           <button className='w-full h-[46px] bg-[#633CFF] text-white text-[16px] rounded-[8px]'>Create new account</button>

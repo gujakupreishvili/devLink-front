@@ -19,16 +19,19 @@ interface LinksProps {
 }
 
 export default function Links({ linkArr, setLinkArr }: LinksProps) {
+
+
   const handleInputChange = (index: number, key: keyof Link, value: string) => {
     const updatedLinks = [...linkArr];
     updatedLinks[index][key] = value;
     setLinkArr(updatedLinks);
   };
+  
 
   //ლინკის წაშლა
   const handleRemove = async (index: number) => {
     const linkToRemove = linkArr[index];
-    console.log("Link to remove:", linkToRemove);
+    // console.log("Link to remove:", linkToRemove);
   
     try {
       // თუ ლინკს აქვს `_id`, მონგოს ბაზიდან წავშლით
@@ -39,15 +42,29 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
           return;
         }
   
-        await axios.delete(`http://localhost:3001/links/${linkToRemove._id}`, {
+        const response = await axios.delete(`http://localhost:3001/links/${linkToRemove._id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
   
-        console.log(`Link removed from database: ${linkToRemove._id}`);
+        // console.log(`Link removed from database: ${linkToRemove._id}`);
+  
+        if (response.status === 200) {
+
+          const updatedLinks = linkArr.filter((_, i) => i !== index);
+          setLinkArr(updatedLinks);
+
+          localStorage.setItem('links', JSON.stringify(updatedLinks));
+          // console.log("Link removed from frontend and local storage as well.");
+        }
       } else {
-        console.log("Link does not have an _id, removing locally.");
+   
+        const updatedLinks = linkArr.filter((_, i) => i !== index);
+        setLinkArr(updatedLinks);
+
+        localStorage.setItem('links', JSON.stringify(updatedLinks));
+        // console.log("Link does not have an _id, removing locally from frontend and local storage.");
       }
     } catch (error: any) {
       console.error(
@@ -55,14 +72,7 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
         error?.response?.data || error.message
       );
     }
-  
-    // ლოკალურად ლინკის წაშლა
-    const updatedLinks = linkArr.filter((_, i) => i !== index);
-    setLinkArr(updatedLinks);
   };
-  
-  
-
   const platforms = [
     { value: 'GitHub', icon: <FaGithub /> },
     { value: 'Twitter', icon: <FaTwitter /> },
@@ -92,7 +102,7 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
 
   return (
     <>
-    <div className={`${linkArr.length >=2 ?'overflow-auto' :""}  h-[600px]`}>
+    <div className={`${linkArr.length >=2 ?'overflow-auto' :""}  h-[600px] lg:h-[500px]`}>
       {linkArr.map((link, index) => (
         <div key={index} className='bg-[#FAFAFA] w-full rounded-[8px] px-[22px] py-[18px] mb-[30px]'>
           <div className='flex justify-between items-center'>
@@ -117,7 +127,7 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
             </div>
 
             {activeIndex === index && (
-              <div className='flex flex-col absolute bg-[#FFFFFF] w-full mt-[8px] rounded-[8px] py-[12px] px-[15px] h-[200px] overflow-y-auto'>
+              <div className='flex flex-col absolute bg-[#FFFFFF] w-full mt-[8px] rounded-[8px] py-[12px] px-[15px] h-[200px] overflow-y-auto z-10'>
                 {platforms.map((platform, platformIndex) => (
                   <div
                     key={platformIndex}

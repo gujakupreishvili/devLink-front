@@ -5,8 +5,8 @@ import { getCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { FaGithub, FaTwitter, FaYoutube, FaLinkedin, FaGitlab, FaStackOverflow, FaArrowRight } from "react-icons/fa";
-import { SiFrontendmentor } from "react-icons/si";
+import {  FaArrowRight } from "react-icons/fa";
+import {platformStyles} from "../../components/platformStyles/styles"
 
 type Link = {
   url: string;
@@ -28,16 +28,6 @@ type UserData = {
 export default function View() {
   const [data, setData] = useState<UserData>();
   const router = useRouter();
-
-  const platformStyles: Record<string, { bg: string; text: string; icon: JSX.Element }> = {
-    GitHub: { bg: "bg-black", text: "text-white", icon: <FaGithub size={20} /> },
-    Twitter: { bg: "bg-blue-500", text: "text-white", icon: <FaTwitter size={20} /> },
-    YouTube: { bg: "bg-red-600", text: "text-white", icon: <FaYoutube size={20} /> },
-    LinkedIn: { bg: "bg-blue-700", text: "text-white", icon: <FaLinkedin size={20} /> },
-    GitLab: { bg: "bg-orange-500", text: "text-white", icon: <FaGitlab size={20} /> },
-    "Frontend Mentor": { bg: "bg-gray-700", text: "text-white", icon: <SiFrontendmentor size={20} /> },
-    "Stack Overflow": { bg: "bg-yellow-500", text: "text-black", icon: <FaStackOverflow size={20} /> },
-  };
 
   const getInfo = async () => {
     try {
@@ -72,16 +62,18 @@ export default function View() {
     <>
       <div className="w-full flex flex-col items-center h-screen ">
         <PrevHeader />
-        <div className="w-[237px] flex flex-col gap-[15px] h-[437px] mt-[15%]">
+        <div className="w-[237px] flex flex-col gap-[15px] h-[437px] mt-[15%] md:z-20 md:bg-white md:mt-[270px] md:w-[349px] md:rounded-[12px] md:pt-[30px] md:px-[45px]">
           <div className="flex flex-col items-center py-[12px] gap-[12px] mb-[30px]">
             
             {data?.urlId?.filePath && (
+              
               <Image 
               src={data?.urlId.filePath} 
               alt="userlogo" 
-              width={150} 
-              height={150} 
-              unoptimized />
+              width={104} 
+              height={104}
+              unoptimized 
+              className=' w-[104px] h-[104px] border-[4px] border-[#633CFF] rounded-[52px]'/>
             )}
             <p className="text-[32px] text-black font-bold">{data?.name}</p>
             <p className="text-[#737373] text-[16px]">{data?.email}</p>

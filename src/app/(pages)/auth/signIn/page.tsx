@@ -44,9 +44,9 @@ export default function SignIn() {
   
     const { handleBlur, handleChange, handleSubmit, values, errors } = formik;
   return (
-    <div className='flex flex-col justify-center items-start h-screen gap-[40px] px-[20px]'>
+    <div className='flex flex-col justify-center items-start h-screen gap-[40px] px-[20px] md:items-center'>
     <Image src={logo} alt={"logo"} />
-    <div className='w-full'>
+    <div className='w-full md:w-[476px] md:bg-white md:p-[25px] md:rounded-[8px]'>
      <h1 className='text-[24px] text-[#333333] font-bold pb-[8px]'>Login</h1>
      <p className='text-[16px] text-[#737373] font-normal pb-[35px]'>Add your details below to get back into the app</p>
      <form action=""
