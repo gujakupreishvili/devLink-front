@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import {  FaArrowRight } from "react-icons/fa";
 import {platformStyles} from "../../components/platformStyles/styles"
+import { motion } from 'framer-motion';
 
 type Link = {
   url: string;
@@ -62,7 +63,11 @@ export default function View() {
     <>
       <div className="w-full flex flex-col items-center h-screen ">
         <PrevHeader />
-        <div className="w-[237px] flex flex-col gap-[15px] h-[437px] mt-[15%] md:z-20 md:bg-white md:mt-[270px] md:w-[349px] md:rounded-[12px] md:pt-[30px] md:px-[45px]">
+        <motion.div 
+            initial={{ x: 0, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.7 }}
+        className="w-[237px] flex flex-col gap-[15px] h-[437px] mt-[15%] md:z-20 md:bg-white md:mt-[270px] md:w-[349px] md:rounded-[12px] md:pt-[30px] md:px-[45px]">
           <div className="flex flex-col items-center py-[12px] gap-[12px] mb-[30px]">
             
             {data?.urlId?.filePath && (
@@ -98,7 +103,7 @@ export default function View() {
               })
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );
