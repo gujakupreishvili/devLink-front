@@ -18,7 +18,7 @@ export default function Img({ setData }: ImgProps) {
         return;
       }
 
-      const res = await axios.post("http://localhost:3001/upload", formData, {
+      const res = await axios.post("https://devlinks-back-ffrr.onrender.com/upload", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

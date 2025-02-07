@@ -10,6 +10,7 @@ import { useFormik } from 'formik'
 import axios, { AxiosError } from 'axios'
 import { SigninValidationSchema } from '@/app/utils/validation/signinValidationSchema'
 import { setCookie } from 'cookies-next'
+import { motion } from 'framer-motion'
 const initialValue = {
   name: "",
   email: "",
@@ -23,7 +24,7 @@ export default function SignIn() {
     initialValues: initialValue,
     onSubmit: async(values) => {
       try {
-        const res = await axios.post("http://localhost:3001/auth/sign-in", values)
+        const res = await axios.post("https://devlinks-back-ffrr.onrender.com/auth/sign-in", values)
         const accessToken = res.data.accessToken
         setCookie('accessToken', accessToken, {maxAge: 60*60})
         router.push("/")
@@ -44,7 +45,11 @@ export default function SignIn() {
   
     const { handleBlur, handleChange, handleSubmit, values, errors } = formik;
   return (
-    <div className='flex flex-col justify-center items-start h-screen gap-[40px] px-[20px] md:items-center'>
+    <motion.div 
+    initial={{opacity:0, y:-50}}
+    animate={{opacity:1,y:0}}
+    transition={{ duration: 0.7 }}
+    className='flex flex-col justify-center items-start h-screen gap-[40px] px-[20px] md:items-center'>
     <Image src={logo} alt={"logo"} />
     <div className='w-full md:w-[476px] md:bg-white md:p-[25px] md:rounded-[8px]'>
      <h1 className='text-[24px] text-[#333333] font-bold pb-[8px]'>Login</h1>
@@ -83,7 +88,7 @@ export default function SignIn() {
        </div>
        </div>
        <p className='text-red-500'>{error}</p>
-       <button className='w-full h-[46px] bg-[#633CFF] text-white text-[16px] rounded-[8px]'>Login</button>
+       <button className='w-full h-[46px] bg-[#633CFF] hover:bg-[#BEADFF] transition-[2s] text-white text-[16px] rounded-[8px]'>Login</button>
        <p className='text-center '>
        Don’t have an account?
        <Link href={"/auth/signUp"}  className='text-[#633CFF] cursor-pointer' >  Create account</Link>
@@ -91,6 +96,6 @@ export default function SignIn() {
      </form>
     </div>
    
- </div>
+ </motion.div>
   )
 }

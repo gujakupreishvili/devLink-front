@@ -48,7 +48,7 @@ export default function UploadImg() {
 
     const getInfo = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/users/me", {
+        const res = await axios.get("https://devlinks-back-ffrr.onrender.com/users/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

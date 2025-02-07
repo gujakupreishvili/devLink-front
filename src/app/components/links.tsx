@@ -42,7 +42,7 @@ export default function Links({ linkArr, setLinkArr }: LinksProps) {
           return;
         }
   
-        const response = await axios.delete(`http://localhost:3001/links/${linkToRemove._id}`, {
+        const response = await axios.delete(`https://devlinks-back-ffrr.onrender.com/links/${linkToRemove._id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

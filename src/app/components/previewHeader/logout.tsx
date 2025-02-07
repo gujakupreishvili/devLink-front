@@ -39,13 +39,13 @@ export default function Logout({ setLogout }: LogoutProps) {
             <div className="w-full flex justify-between mt-[20px]">
               <button 
                 onClick={handleCancel}
-                className="px-4 py-2 bg-gray-300 rounded-md"
+                className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-200 cursor-pointer transition-[2s] "
               >
                 Cancel
               </button>
               <button 
               onClick={handleLogout}
-                className="px-4 py-2 bg-red-500 text-white rounded-md"
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 cursor-pointer transition-[2s]"
               >
                 Logout
               </button>

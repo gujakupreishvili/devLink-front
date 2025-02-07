@@ -37,7 +37,7 @@ export default function View() {
         console.error("No token found");
         return;
       }
-      const res = await axios.get("http://localhost:3001/users/me", {
+      const res = await axios.get("https://devlinks-back-ffrr.onrender.com/users/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -75,7 +75,7 @@ export default function Content() {
     }
   
     try {
-      const response = await axios.post("http://localhost:3001/links", newLinks, {
+      const response = await axios.post("https://devlinks-back-ffrr.onrender.com/links", newLinks, {
         headers: { Authorization: `Bearer ${token}` },
       });
   

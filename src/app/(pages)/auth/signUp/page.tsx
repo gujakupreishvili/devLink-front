@@ -10,6 +10,7 @@ import axios, { AxiosError } from 'axios'
 import { SignupvalidationSchema } from '@/app/utils/validation/signupValidationSchema'
 import { useRouter } from 'next/navigation'
 import { CiUser } from 'react-icons/ci'
+import { motion } from 'framer-motion'
  
 const initialValue = {
   name: "",
@@ -27,7 +28,7 @@ export default function SignUp() {
     initialValues: initialValue,
     onSubmit: async (values) => {
       try {
-        const res = await axios.post("http://localhost:3001/auth/sign-up", values)
+        const res = await axios.post("https://devlinks-back-ffrr.onrender.com/auth/sign-up", values)
         if(res.status === 400){
           setError('user exists')
           return
@@ -51,7 +52,11 @@ export default function SignUp() {
 
 
   return (
-    <div className='flex flex-col justify-center items-start md:items-center h-screen gap-[40px] px-[20px]'>
+    <motion.div 
+    initial={{opacity:0, y:-50}}
+    animate={{opacity:1,y:0}}
+    transition={{ duration: 0.7 }}
+    className='flex flex-col justify-center items-start md:items-center h-screen gap-[40px] px-[20px]'>
        <Image src={logo} alt={"logo"} />
        <div className='w-full md:w-[476px] md:bg-white md:p-[25px] md:rounded-[8px]'>
         <h1 className='text-[24px] text-[#333333] font-bold pb-[8px]'>Create account</h1>
@@ -105,7 +110,7 @@ export default function SignUp() {
            {errors.password && <p className='text-red-500  absolute right-2 text-[12px] hidden md:block'>{errors.password}</p>}
           </div>
           </div>
-          <button className='w-full h-[46px] bg-[#633CFF] text-white text-[16px] rounded-[8px]'>Create new account</button>
+          <button className='w-full h-[46px] bg-[#633CFF] hover:bg-[#BEADFF] transition-[2s] text-white text-[16px] rounded-[8px]'>Create new account</button>
           <p className='text-center'>
             Already have an account? 
           <Link href={"/auth/signIn"} className='text-[#633CFF] cursor-pointer'> Login</Link>
@@ -113,6 +118,6 @@ export default function SignUp() {
         </form>
        </div>
       
-    </div>
+    </motion.div>
   )
 }
