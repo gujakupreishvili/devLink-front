@@ -16,6 +16,7 @@ export default function Logout({ setLogout }: LogoutProps) {
     localStorage.clear();
     sessionStorage.clear();
     router.push('/auth/signUp');
+    setLogout(false)
   };
   const handleCancel = () => {
     setIsVisible(false);
@@ -43,6 +44,7 @@ export default function Logout({ setLogout }: LogoutProps) {
                 Cancel
               </button>
               <button 
+              onClick={handleLogout}
                 className="px-4 py-2 bg-red-500 text-white rounded-md"
               >
                 Logout
